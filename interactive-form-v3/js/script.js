@@ -36,7 +36,7 @@ colorCheck = () => {
         };
     };
 };
-// checks data them and disables as neccessary.
+// checks data-theme and disables as neccessary.
 function designColor(val) {
     if (color[i].getAttribute('data-theme') == val) {
         color[i].disabled = true;
@@ -48,9 +48,6 @@ function designColor(val) {
 
 
 
-
-// ------Event listeners---------//
-
 // Event Listener for Job role.
 title.addEventListener('change', () => {
     jobCheck();
@@ -59,14 +56,7 @@ title.addEventListener('change', () => {
 design.addEventListener('change', () => {
     colorCheck();
 });
-
-
-
-
-
-
-
-
+// first load
 colorCheck();
 focusName();
 jobCheck();
