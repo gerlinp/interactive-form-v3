@@ -2,9 +2,10 @@
 const otherJob = document.querySelector('#other-job-role');
 const design = document.querySelector('#design');
 const color = document.querySelector('#color');
-const jsPuns = document.querySelectorAll('[data-theme="js puns"]')
-const jshearts = document.querySelectorAll('[data-theme="heart js"]')
+const jsPuns = document.querySelectorAll('[data-theme="js puns"]');
+const jshearts = document.querySelectorAll('[data-theme="heart js"]');
 let title = document.querySelector('#title');
+let cost = 0;
 
 // Name field focus on startup function
 focusName = function() {
@@ -44,6 +45,11 @@ function designColor(val) {
         color[i].disabled = false;
     }; 
 };
+
+//Activities
+
+
+actCost.innerHTML = `Total: $${cost}`
 
 
 
