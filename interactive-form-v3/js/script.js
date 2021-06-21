@@ -5,7 +5,8 @@ const color = document.querySelector('#color');
 const jsPuns = document.querySelectorAll('[data-theme="js puns"]');
 const jshearts = document.querySelectorAll('[data-theme="heart js"]');
 let title = document.querySelector('#title');
-let cost = 0;
+
+
 
 // Name field focus on startup function
 focusName = function() {
@@ -48,8 +49,28 @@ function designColor(val) {
 
 //Activities
 
+const act = document.querySelector('#activities').elements;
+let cost = 0;
+let actCost = document.querySelector('#activities-cost');
 
-actCost.innerHTML = `Total: $${cost}`
+function check() {
+    cost = 0;
+    for (let i = 0; i < act.length; i++ ) {
+        if (act[i].checked == true) {
+            console.log(act[i])
+            cost += parseInt(act[i].getAttribute('data-cost'));
+            console.log(cost)
+            actCost.innerHTML = `Total: $${cost}`;
+        };
+    };  
+    actCost.innerHTML = `Total: $${cost}`;
+};
+
+act.addEventListener('change', () => {
+    check();
+});
+
+
 
 
 
