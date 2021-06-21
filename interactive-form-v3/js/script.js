@@ -4,8 +4,11 @@ const design = document.querySelector('#design');
 const color = document.querySelector('#color');
 const jsPuns = document.querySelectorAll('[data-theme="js puns"]');
 const jshearts = document.querySelectorAll('[data-theme="heart js"]');
+const act = document.querySelector('#activities');
+const actInputs = document.querySelector('#activities').elements;
 let title = document.querySelector('#title');
-
+let actCost = document.querySelector('#activities-cost');
+let cost = 0;
 
 
 // Name field focus on startup function
@@ -48,17 +51,12 @@ function designColor(val) {
 };
 
 //Activities
-const act = document.querySelector('#activities').elements;
-let cost = 0;
-let actCost = document.querySelector('#activities-cost');
 
 function check() {
     cost = 0;
-    for (let i = 0; i < act.length; i++ ) {
-        if (act[i].checked == true) {
-            console.log(act[i])
-            cost += parseInt(act[i].getAttribute('data-cost'));
-            console.log(cost)
+    for (let i = 0; i < actInputs.length; i++ ) {
+        if (actInputs[i].checked == true) {
+            cost += parseInt(actInputs[i].getAttribute('data-cost'));
             actCost.innerHTML = `Total: $${cost}`;
         };
     };  
