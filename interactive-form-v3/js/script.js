@@ -48,7 +48,6 @@ function designColor(val) {
 };
 
 //Activities
-
 const act = document.querySelector('#activities').elements;
 let cost = 0;
 let actCost = document.querySelector('#activities-cost');
