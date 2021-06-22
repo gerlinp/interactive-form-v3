@@ -50,22 +50,37 @@ function designColor(val) {
     }; 
 };
 
-//Activities
-
+// loops through activities and caluculates cost based on whats selected.
 function check() {
     cost = 0;
     for (let i = 0; i < actInputs.length; i++ ) {
         if (actInputs[i].checked == true) {
             cost += parseInt(actInputs[i].getAttribute('data-cost'));
+
             actCost.innerHTML = `Total: $${cost}`;
         };
-    };  
     actCost.innerHTML = `Total: $${cost}`;
+    timeCheck();
+    }
+};
+
+//prevents user from selecting mutltiple workshops that are at the same time.
+function timeCheck(first, second) {
+    if (actInputs[1].checked && actInputs[3].checked) {
+        alert(`Please choose only one workshop between ${actInputs[1].getAttribute('data-day-and-time')}`);
+        actInputs[1].checked = false;
+        actInputs[3].checked = false;
+    } else if (actInputs[2].checked && actInputs[4].checked) {
+        alert(`Please choose only one workshop between ${actInputs[2].getAttribute('data-day-and-time')}`);
+        actInputs[2].checked = false;
+        actInputs[4].checked = false;
+    }
 };
 
 act.addEventListener('change', () => {
     check();
 });
+
 
 
 
