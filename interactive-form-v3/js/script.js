@@ -12,9 +12,8 @@ let title = document.querySelector('#title');
 let actCost = document.querySelector('#activities-cost');
 let cost = 0;
 
-
-// Name field focus on startup function
-document.querySelector('#name').focus()
+document.querySelector('#name').focus() // Name field focus on startup function
+document.querySelector('[value=credit-card]').selected = true;  // Credit card the default option for payment.
 
 // Adds other job field when other is selected.
  jobCheck = () => {
@@ -79,8 +78,7 @@ function timeCheck(first, second) {
     }
 };
 
-// Make credit card the default option for payment info.
-document.querySelector('[value=credit-card]').selected = true; 
+
 
 // function for chekc what payment is selected.
 function payCheck() {
