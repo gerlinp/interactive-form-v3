@@ -8,6 +8,10 @@ const act = document.querySelector('#activities');
 const actInputs = document.querySelector('#activities').elements;
 const payment = document.querySelector('#payment');
 const payInfo = document.querySelector('#payment').options;
+
+const nameField = document.querySelector("#name");
+const email = document.querySelector("#email");
+
 let title = document.querySelector('#title');
 let actCost = document.querySelector('#activities-cost');
 let cost = 0;
@@ -24,7 +28,8 @@ document.querySelector('[value=credit-card]').selected = true;  // Credit card t
     };
 };
 jobCheck();
-
+title.addEventListener('change', () => jobCheck()); // Event Listener for Job role.
+    
 // Adds Color field when a design is selected
 colorCheck = () => {
     if ( design.value == 'Select Theme' ) {
@@ -43,6 +48,8 @@ colorCheck = () => {
     };
 };
 colorCheck();
+design.addEventListener('change', () => colorCheck()); // Event listener for tshirt color.
+
 // checks data-theme and disables as neccessary.
 function designColor(val) {
     if (color[i].getAttribute('data-theme') == val) {
@@ -64,9 +71,10 @@ function check() {
     timeCheck();
     }
 };
+act.addEventListener('change', () => check()); // Event listener for actvities section
 
 //prevents user from selecting mutltiple workshops that are at the same time.
-function timeCheck(first, second) {
+function timeCheck() {
     if (actInputs[1].checked && actInputs[3].checked) {
         alert(`Please choose only one workshop between ${actInputs[1].getAttribute('data-day-and-time')}`);
         actInputs[1].checked = false;
@@ -77,8 +85,6 @@ function timeCheck(first, second) {
         actInputs[4].checked = false;
     }
 };
-
-
 
 // function for chekc what payment is selected.
 function payCheck() {
@@ -93,24 +99,52 @@ function payCheck() {
     }
 };
 payCheck();
+payment.addEventListener('change', () => payCheck()); // Event listener for payment color.
+    
+/*-------- Form Validation-------*/
 
-payment.addEventListener('change', () => { // Event listener for payment color.
-    payCheck();
+
+function isValidEmail(email) {
+    return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
+};
+
+isNameBlank = () => {
+    if ( nameField.value == "") {
+        alert("Name must be filled out");
+    };
+};
+
+
+function showOrHideTip(show, element) { // show element when show is true, hide when false
+    if (show) {
+      element.style.display = "inherit";
+    } else {
+      element.style.display = "none";
+    }
+  }
+
+  function createListener(validator) {
+    return e => {
+      const text = e.target.value;
+      const valid = validator(text);
+      const showTip = text !== "" && !valid;
+      const tooltip = e.target.nextElementSibling;
+      showOrHideTip(showTip, tooltip);
+    };
+  }
+
+
+email.addEventListener("input", createListener(isValidEmail));
+
+document.querySelector('[type="submit"]').addEventListener('click', function(e) { 
+    e.preventDefault();
+    isNameBlank();
 });
 
 
-act.addEventListener('change', () => { // Event listener for actvities section
-    check();
-});
 
 
-title.addEventListener('change', () => { // Event Listener for Job role.
-    jobCheck();
-});
 
-design.addEventListener('change', () => { // Event listener for tshirt color.
-    colorCheck();
-});
 
 
 
