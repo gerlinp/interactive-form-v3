@@ -6,15 +6,15 @@ const jsPuns = document.querySelectorAll('[data-theme="js puns"]');
 const jshearts = document.querySelectorAll('[data-theme="heart js"]');
 const act = document.querySelector('#activities');
 const actInputs = document.querySelector('#activities').elements;
+const payment = document.querySelector('#payment');
+const payInfo = document.querySelector('#payment').options;
 let title = document.querySelector('#title');
 let actCost = document.querySelector('#activities-cost');
 let cost = 0;
 
 
 // Name field focus on startup function
-focusName = function() {
-    document.querySelector('#name').focus()
-}
+document.querySelector('#name').focus()
 
 // Adds other job field when other is selected.
  jobCheck = () => {
@@ -23,7 +23,9 @@ focusName = function() {
     } else {
         otherJob.style.display = "block";
     };
-}
+};
+jobCheck();
+
 // Adds Color field when a design is selected
 colorCheck = () => {
     if ( design.value == 'Select Theme' ) {
@@ -41,6 +43,7 @@ colorCheck = () => {
         };
     };
 };
+colorCheck();
 // checks data-theme and disables as neccessary.
 function designColor(val) {
     if (color[i].getAttribute('data-theme') == val) {
@@ -56,7 +59,6 @@ function check() {
     for (let i = 0; i < actInputs.length; i++ ) {
         if (actInputs[i].checked == true) {
             cost += parseInt(actInputs[i].getAttribute('data-cost'));
-
             actCost.innerHTML = `Total: $${cost}`;
         };
     actCost.innerHTML = `Total: $${cost}`;
@@ -77,20 +79,45 @@ function timeCheck(first, second) {
     }
 };
 
-// Event listener for actvities section
-act.addEventListener('change', () => {
+// Make credit card the default option for payment info.
+document.querySelector('[value=credit-card]').selected = true; 
+
+// function for chekc what payment is selected.
+function payCheck() {
+    for (let i = 1; i < payInfo.length; i++ ) {
+        let payVal = '#'
+         payVal += payInfo[i].getAttribute('value');
+        if (payInfo[i].selected) {
+            document.querySelector(payVal).style.display = 'block'
+        } else {
+           document.querySelector(payVal).style.display = 'none'; 
+        }
+    }
+};
+payCheck();
+
+payment.addEventListener('change', () => { // Event listener for payment color.
+    payCheck();
+});
+
+
+act.addEventListener('change', () => { // Event listener for actvities section
     check();
 });
 
-// Event Listener for Job role.
-title.addEventListener('change', () => {
+
+title.addEventListener('change', () => { // Event Listener for Job role.
     jobCheck();
 });
-// Event listener for tshirt color.
-design.addEventListener('change', () => {
+
+design.addEventListener('change', () => { // Event listener for tshirt color.
     colorCheck();
 });
-// first load
-colorCheck();
-focusName();
-jobCheck();
+
+
+
+
+
+
+
+
