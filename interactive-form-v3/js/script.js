@@ -77,15 +77,10 @@ function timeCheck(first, second) {
     }
 };
 
+// Event listener for actvities section
 act.addEventListener('change', () => {
     check();
 });
-
-
-
-
-
-
 
 // Event Listener for Job role.
 title.addEventListener('change', () => {
