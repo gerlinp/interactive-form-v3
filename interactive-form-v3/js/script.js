@@ -104,6 +104,15 @@ payment.addEventListener('change', () => payCheck()); // Event listener for paym
 /*-------- Form Validation-------*/
 
 
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const telephoneInput = document.getElementById("telephone");
+const emailInput = document.getElementById("email");
+
+function isValidUsername(username) {
+    return /^[a-z]+$/.test(username);
+  }
+
 function isValidEmail(email) {
     return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
 };
