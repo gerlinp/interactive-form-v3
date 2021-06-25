@@ -8,13 +8,13 @@ const act = document.querySelector('#activities');
 const actInputs = document.querySelector('#activities').elements;
 const payment = document.querySelector('#payment');
 const payInfo = document.querySelector('#payment').options;
-
 const nameField = document.querySelector("#name");
 const email = document.querySelector("#email");
-
 let title = document.querySelector('#title');
 let actCost = document.querySelector('#activities-cost');
 let cost = 0;
+let fail = ''
+let emailCheck = true;
 
 document.querySelector('#name').focus() // Name field focus on startup function
 document.querySelector('[value=credit-card]').selected = true;  // Credit card the default option for payment.
@@ -110,18 +110,19 @@ function isValidEmail(email) {
 
 isNameBlank = () => {
     if ( nameField.value == "") {
-        alert("Name must be filled out");
+        fail += `Name field should not be blank`
     };
 };
-
 
 function showOrHideTip(show, element) { // show element when show is true, hide when false
     if (show) {
       element.style.display = "inherit";
+      emailCheck = true;
     } else {
       element.style.display = "none";
+        emailCheck = false;
     }
-  }
+  };
 
   function createListener(validator) {
     return e => {
@@ -131,14 +132,21 @@ function showOrHideTip(show, element) { // show element when show is true, hide 
       const tooltip = e.target.nextElementSibling;
       showOrHideTip(showTip, tooltip);
     };
-  }
-
+  };
 
 email.addEventListener("input", createListener(isValidEmail));
 
+let form = document.querySelector('#submit')
 document.querySelector('[type="submit"]').addEventListener('click', function(e) { 
     e.preventDefault();
+    fail ='';
     isNameBlank();
+   if (fail !== '' || show == true) {
+        alert('form still has errors')
+   } else {
+    form.submit();
+   }
+    
 });
 
 
