@@ -8,13 +8,12 @@ const act = document.querySelector('#activities');
 const actInputs = document.querySelector('#activities').elements;
 const payment = document.querySelector('#payment');
 const payInfo = document.querySelector('#payment').options;
-const nameField = document.querySelector("#name");
-const email = document.querySelector("#email");
+
+
+
 let title = document.querySelector('#title');
 let actCost = document.querySelector('#activities-cost');
 let cost = 0;
-let fail = ''
-let emailCheck = true;
 
 document.querySelector('#name').focus() // Name field focus on startup function
 document.querySelector('[value=credit-card]').selected = true;  // Credit card the default option for payment.
@@ -103,70 +102,62 @@ payment.addEventListener('change', () => payCheck()); // Event listener for paym
     
 /*-------- Form Validation-------*/
 
-
-const usernameInput = document.getElementById("username");
-const passwordInput = document.getElementById("password");
-const telephoneInput = document.getElementById("telephone");
-const emailInput = document.getElementById("email");
-
-function isValidUsername(username) {
-    return /^[a-z]+$/.test(username);
-  }
-
-function isValidEmail(email) {
-    return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
+const isValidEmail = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
 };
 
-isNameBlank = () => {
-    if ( nameField.value == "") {
-        fail += `Name field should not be blank`
-    };
+const form = document.querySelector('#form');
+const thanks = document.querySelector('.thanks');
+const nameInput =  document.querySelector('#name');
+const emailInput =  document.querySelector('#email');
+
+const inputs = [nameInput,emailInput]
+
+let isFormValid = false;
+let isValidationOn = false;
+
+const resetElm = (elm) => {
+    elm.classList.remove('invalid');
+    elm.nextElementSibling.style.display = "none";
 };
 
-function showOrHideTip(show, element) { // show element when show is true, hide when false
-    if (show) {
-      element.style.display = "inherit";
-      emailCheck = true;
-    } else {
-      element.style.display = "none";
-        emailCheck = false;
+const invalidateElm = (elm) => {
+    elm.classList.add('invalid');
+    elm.nextElementSibling.style.display = "block";
+};
+
+const validateInputs = () => {
+    if (!isValidationOn) return;
+    isFormValid = true;
+    resetElm(nameInput);
+    resetElm(emailInput);
+
+    if (!nameInput.value) {
+        isFormValid = false;
+        invalidateElm(nameInput);
     }
-  };
 
-  function createListener(validator) {
-    return e => {
-      const text = e.target.value;
-      const valid = validator(text);
-      const showTip = text !== "" && !valid;
-      const tooltip = e.target.nextElementSibling;
-      showOrHideTip(showTip, tooltip);
-    };
-  };
+    if (!isValidEmail(emailInput.value)) {
+        isFormValid = false;
+        invalidateElm(emailInput);
+    }
+};
 
-email.addEventListener("input", createListener(isValidEmail));
-
-let form = document.querySelector('#submit')
-document.querySelector('[type="submit"]').addEventListener('click', function(e) { 
+form.addEventListener('submit', (e) => {
     e.preventDefault();
-    fail ='';
-    isNameBlank();
-   if (fail !== '' || show == true) {
-        alert('form still has errors')
-   } else {
-    form.submit();
-   }
-    
+    isValidationOn = true;
+    validateInputs();
+    if (isFormValid) {
+        form.remove();
+        thanks.style.display = "block";
+    }
 });
 
-
-
-
-
-
-
-
-
-
-
+inputs.forEach(input => {
+    input.addEventListener('input', () => {
+        validateInputs();
+    });
+});
 
 
