@@ -640,11 +640,4 @@ button:hover {
 /* invalid class*/
 .invalid {
   border: 1px solid red;
-}
-
-.thanks {
-  padding: 40px;
-  font-size: 32px;
-  text-align: center;
-  display: none;
-}
+};

@@ -8,9 +8,15 @@ const act = document.querySelector('#activities');
 const actInputs = document.querySelector('#activities').elements;
 const payment = document.querySelector('#payment');
 const payInfo = document.querySelector('#payment').options;
-
-
-
+const cardNum = document.querySelector('#cc-num');
+const zip = document.querySelector('#zip');
+const cvv = document.querySelector('#cvv');
+const form = document.querySelector('#form');
+const nameInput =  document.querySelector('#name');
+const emailInput =  document.querySelector('#email');
+const inputs = [nameInput,emailInput,]
+const month = document.querySelector('#exp-month');
+const year = document.querySelector('#exp-year');
 let title = document.querySelector('#title');
 let actCost = document.querySelector('#activities-cost');
 let cost = 0;
@@ -85,7 +91,7 @@ function timeCheck() {
     }
 };
 
-// function for chekc what payment is selected.
+// function to check what payment is selected.
 function payCheck() {
     for (let i = 1; i < payInfo.length; i++ ) {
         let payVal = '#'
@@ -100,19 +106,18 @@ function payCheck() {
 payCheck();
 payment.addEventListener('change', () => payCheck()); // Event listener for payment color.
     
-/*-------- Form Validation-------*/
+/* Form Validation based on form validation from  */
 
+
+
+const isValidCredit = (cardNum) => { return /^\d{13,16}$/.test(cardNum.value)};
+const isValidCredit2 = (cardNum) => {return /^\d+$/.test(cardNum.value)}; 
+const isValidZip = (zip) => { return /^\d{5}$/.test(zip.value)};
+const IsValidcvv = (cvv) => { return /^\d{3}$/.test(cvv.value)};
 const isValidEmail = (email) => {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 };
-
-const form = document.querySelector('#form');
-const thanks = document.querySelector('.thanks');
-const nameInput =  document.querySelector('#name');
-const emailInput =  document.querySelector('#email');
-
-const inputs = [nameInput,emailInput]
 
 let isFormValid = false;
 let isValidationOn = false;
@@ -136,28 +141,70 @@ const validateInputs = () => {
     if (!nameInput.value) {
         isFormValid = false;
         invalidateElm(nameInput);
-    }
+    };
 
     if (!isValidEmail(emailInput.value)) {
         isFormValid = false;
         invalidateElm(emailInput);
-    }
+    };
+
+    if ( cost == 0 ) {
+        document.querySelector('#activities-hint').style.display = 'block'
+    } else {
+        document.querySelector('#activities-hint').style.display = 'none'
+    };
+
+ 
 };
 
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    isValidationOn = true;
-    validateInputs();
-    if (isFormValid) {
-        form.remove();
-        thanks.style.display = "block";
-    }
+const validateCC = () => {
+
+    const creditcardval = [cardNum,zip,cvv];
+    creditcardval.forEach( option => resetElm(option));   
+
+        if (!isValidCredit2(cardNum)) {       
+            document.querySelector('#cc-hint').innerHTML = 'Credit card cannot contain letters & be between 13 - 16 digits'
+            isFormValid = false;
+            invalidateElm(cardNum);
+        } else {
+            document.querySelector('#cc-hint').innerHTML = 'Credit card number must be between 13 - 16 digits'
+            if (!isValidCredit(cardNum)) {
+                isFormValid = false;
+                invalidateElm(cardNum);
+            };
+        }
+ 
+        if (!isValidZip(zip)) {
+         isFormValid = false;
+         invalidateElm(zip);
+        };
+ 
+        if (!IsValidcvv(cvv)) {
+         isFormValid = false;
+         invalidateElm(cvv);
+        };
+};
+
+document.querySelector('.credit-card-box').addEventListener('keyup', (e) => {
+    validateCC();
 });
 
 inputs.forEach(input => {
     input.addEventListener('input', () => {
         validateInputs();
+        validateCC();
     });
 });
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    isValidationOn = true;
+    validateInputs();
+    validateCC()
+    if (isFormValid) {
+        form.submit();
+    }
+});
+
 
 
