@@ -158,7 +158,9 @@ const validateInputs = () => {
 };
 
 const validateCC = () => {
-
+    if (payInfo[1].selected) {
+        console.log('credit card is selected')
+    
     const creditcardval = [cardNum,zip,cvv];
     creditcardval.forEach( option => resetElm(option));   
 
@@ -183,6 +185,7 @@ const validateCC = () => {
          isFormValid = false;
          invalidateElm(cvv);
         };
+    }
 };
 
 document.querySelector('.credit-card-box').addEventListener('keyup', (e) => {
