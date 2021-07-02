@@ -123,35 +123,48 @@ let isFormValid = false;
 let isValidationOn = false;
 
 const resetElm = (elm) => {
-    elm.classList.remove('invalid');
+    elm.parentElement.classList.remove('not-valid');
+    elm.parentElement.classList.remove('valid');
     elm.nextElementSibling.style.display = "none";
 };
 
 const invalidateElm = (elm) => {
-    elm.classList.add('invalid');
+    elm.parentElement.classList.add('not-valid');
     elm.nextElementSibling.style.display = "block";
 };
+const validateElm = (elm) => {
+    elm.parentElement.classList.add('valid');
+    elm.nextElementSibling.style.display = "none";
+};
+
 
 const validateInputs = () => {
     if (!isValidationOn) return;
     isFormValid = true;
-    resetElm(nameInput);
+    
     resetElm(emailInput);
 
     if (!nameInput.value) {
         isFormValid = false;
         invalidateElm(nameInput);
-    };
+    } else {
+        resetElm(nameInput);
+        validateElm(nameInput);
+    }
 
     if (!isValidEmail(emailInput.value)) {
         isFormValid = false;
         invalidateElm(emailInput);
+    } else {
+        resetElm(emailInput);
+        validateElm(emailInput);
     };
 
     if ( cost == 0 ) {
         document.querySelector('#activities-hint').style.display = 'block'
     } else {
         document.querySelector('#activities-hint').style.display = 'none'
+        document.querySelector("#activities legend").classList.add('valid')
     };
 
  
@@ -159,31 +172,43 @@ const validateInputs = () => {
 
 const validateCC = () => {
     if (payInfo[1].selected) {
-        console.log('credit card is selected')
-    
+        let isCreditCardValid = true
     const creditcardval = [cardNum,zip,cvv];
     creditcardval.forEach( option => resetElm(option));   
-
         if (!isValidCredit2(cardNum)) {       
             document.querySelector('#cc-hint').innerHTML = 'Credit card cannot contain letters & be between 13 - 16 digits'
             isFormValid = false;
+            isCreditCardValid = false
             invalidateElm(cardNum);
         } else {
             document.querySelector('#cc-hint').innerHTML = 'Credit card number must be between 13 - 16 digits'
             if (!isValidCredit(cardNum)) {
                 isFormValid = false;
+                isCreditCardValid = false
                 invalidateElm(cardNum);
             };
         }
- 
         if (!isValidZip(zip)) {
          isFormValid = false;
+         isCreditCardValid = false
          invalidateElm(zip);
         };
  
         if (!IsValidcvv(cvv)) {
          isFormValid = false;
+         isCreditCardValid = false
          invalidateElm(cvv);
+        };
+        let legend = document.querySelector(".payment-methods legend");
+        if (isCreditCardValid) {
+
+            if (legend.classList.contains('not-valid') ) {
+                legend.classList.remove('not-valid');
+            }
+            legend.classList.add('valid')
+        } else if (legend.classList.contains('valid')) {
+            legend.classList.remove('valid');
+            legend.classList.add('not-valid')
         };
     }
 };
@@ -195,7 +220,6 @@ document.querySelector('.credit-card-box').addEventListener('keyup', (e) => {
 inputs.forEach(input => {
     input.addEventListener('input', () => {
         validateInputs();
-        validateCC();
     });
 });
 
