@@ -76,7 +76,12 @@ function check() {
     timeCheck();
     }
 };
+
+let actElement = document.activeElement
+
+
 act.addEventListener('change', () => check()); // Event listener for actvities section
+
 
 //prevents user from selecting mutltiple workshops that are at the same time.
 function timeCheck() {
@@ -105,10 +110,18 @@ function payCheck() {
 };
 payCheck();
 payment.addEventListener('change', () => payCheck()); // Event listener for payment color.
+
+let actFocus = document.querySelectorAll('#activities input')
+for(let i=0; i<actFocus.length; i++){
+    actFocus[i].addEventListener('blur', ()=>{
+        actFocus[i].parentElement.classList.remove('focus')
+    })
+    actFocus[i].addEventListener('focus', () =>{
+        actFocus[i].parentElement.classList.add('focus')
+    })
+}
     
 /* Form Validation based on form validation from  */
-
-
 
 const isValidCredit = (cardNum) => { return /^\d{13,16}$/.test(cardNum.value)};
 const isValidCredit2 = (cardNum) => {return /^\d+$/.test(cardNum.value)}; 
@@ -137,28 +150,22 @@ const validateElm = (elm) => {
     elm.nextElementSibling.style.display = "none";
 };
 
+function isNotValid(elm) {
+    if (!elm.value) {
+        isFormValid = false;
+        invalidateElm(elm);
+    } else {
+        resetElm(elm);
+        validateElm(elm);
+    }
+};
 
 const validateInputs = () => {
     if (!isValidationOn) return;
-    isFormValid = true;
-    
+    isFormValid = true;    
     resetElm(emailInput);
-
-    if (!nameInput.value) {
-        isFormValid = false;
-        invalidateElm(nameInput);
-    } else {
-        resetElm(nameInput);
-        validateElm(nameInput);
-    }
-
-    if (!isValidEmail(emailInput.value)) {
-        isFormValid = false;
-        invalidateElm(emailInput);
-    } else {
-        resetElm(emailInput);
-        validateElm(emailInput);
-    };
+    isNotValid(nameInput);
+    isNotValid(emailInput);
 
     let actCheck = document.querySelector('#activities legend');
     actCheck.classList.remove('not-valid');
@@ -167,12 +174,11 @@ const validateInputs = () => {
     if ( cost == 0 ) {
         document.querySelector('#activities-hint').style.display = 'block'
         document.querySelector("#activities legend").classList.add('not-valid');
+        isFormValid = false;
     } else {
         document.querySelector('#activities-hint').style.display = 'none'
         document.querySelector("#activities legend").classList.add('valid');
     };
-
- 
 };
 
 const validateCC = () => {
