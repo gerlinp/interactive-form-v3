@@ -161,7 +161,9 @@ const validateInputs = () => {
     };
 
     let actCheck = document.querySelector('#activities legend');
-    
+    actCheck.classList.remove('not-valid');
+    actCheck.classList.remove('valid');
+
     if ( cost == 0 ) {
         document.querySelector('#activities-hint').style.display = 'block'
         document.querySelector("#activities legend").classList.add('not-valid');
