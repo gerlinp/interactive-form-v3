@@ -160,11 +160,14 @@ const validateInputs = () => {
         validateElm(emailInput);
     };
 
+    let actCheck = document.querySelector('#activities legend');
+    
     if ( cost == 0 ) {
         document.querySelector('#activities-hint').style.display = 'block'
+        document.querySelector("#activities legend").classList.add('not-valid');
     } else {
         document.querySelector('#activities-hint').style.display = 'none'
-        document.querySelector("#activities legend").classList.add('valid')
+        document.querySelector("#activities legend").classList.add('valid');
     };
 
  
