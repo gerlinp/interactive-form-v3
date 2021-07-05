@@ -171,6 +171,12 @@ const validateInputs = () => {
     actCheck.classList.remove('not-valid');
     actCheck.classList.remove('valid');
 
+    if (!isValidEmail(emailInput.value)) {
+        isFormValid = false;
+        invalidateElm(emailInput);
+    };
+    
+
     if ( cost == 0 ) {
         document.querySelector('#activities-hint').style.display = 'block'
         document.querySelector("#activities legend").classList.add('not-valid');
